@@ -2,45 +2,48 @@
 #include <string.h>
 struct category
 {
-  int id, name;
+  int id;
+  char name[30];
 };
 
 struct buku
 {
-  char nrp[15];
-  char nama[30];
+  char judul[30];
+  char pengarang[30];
+  char penerbit[30];
+  char tahun_terbit[30];
   struct category categories;
 };
-struct mahasiswa MHS;
-struct mahasiswa data_mhs[10] = {{"3124500039", "Misyael Yosevian Wiarda", 9, 11, 2003},
-                                 {"3124500024", "Rafif Yosevian Wiarda", 12, 8, 2005},
-                                 {"3124500029", "padidi Yosevian Wiarda", 9, 10, 2009}};
+// struct mahasiswa MHS;
+struct buku data_buku[10] = {{"Pemrograman C", "Misyael Yosevian Wiarda", "Dino Ariel", 10 - 11 - 2003, 1, "Programming"}};
 int N = 3;
-void printStruct(struct mahasiswa data)
+void printStruct(struct buku data_buku)
 {
   printf("\n###### Data Mahasiswa ######\n");
-  printf("NRP : %s\n", data.nrp);
-  printf("Nama : %s\n", data.nama);
-  printf("Tanggal lahir : %d/%d/%d\n\n", data.birthday.day, data.birthday.month, data.birthday.year);
+  printf("NRP : %s\n", data_buku.judul);
+  printf("PENGARANG : %s\n", data_buku.pengarang);
+  printf("PENERBIT : %s\n", data_buku.penerbit);
+  printf("TAHUN TERBIT : %s\n", data_buku.tahun_terbit);
+  printf("CATEGORY : %s\n", data_buku.categories.name);
 }
 
-struct mahasiswa input()
+struct buku input()
 {
-  struct mahasiswa mhs;
+  struct buku data_buku;
   printf("Masukkan NRP: ");
-  fgets(&mhs.nrp, 15, stdin);
+  fgets(&data_buku.nrp, 15, stdin);
   printf("Masukkan Nama: ");
-  fgets(&mhs.nama, 30, stdin);
+  fgets(&data_buku.nama, 30, stdin);
   printf("Masukkan Tanggal Lahir (dd/mm/yyyy): ");
-  scanf("%d %d %d", &mhs.birthday.day, &mhs.birthday.month, &mhs.birthday.year);
-  return mhs;
+  scanf("%d %d %d", &data_buku.birthday.day, &data_buku.birthday.month, &data_buku.birthday.year);
+  return data_buku;
 }
 void addData()
 {
   char lagi;
   do
   {
-    data_mhs[N] = input();
+    data_buku[N] = input();
     fflush(stdin);
     printf("\nMau memasukkan data lagi [Y/T] ? ");
     lagi = getchar();
