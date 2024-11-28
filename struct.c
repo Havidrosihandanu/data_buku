@@ -1,32 +1,32 @@
 #include <stdio.h>
 #include <string.h>
-struct penerbit
+struct category
 {
+  int id;
   char name[30];
-  char alamat[50];
 };
 
 struct buku
 {
   char judul[30];
   char pengarang[30];
+  char penerbit[30];
   char tahun_terbit[30];
-  struct penerbit data_penerbit;
+  struct category categories;
 };
 
-struct buku data_buku[10] = {
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"}};
+struct buku data_buku[10] = {{"Pemrograman C", "Misyael Yosevian Wiarda", "Dino Ariel", "10 - 11 - 2003", 1, "Programming"},
+{"Pemrograman C", "Misyael Yosevian Wiarda", "Dino Ariel", "10 - 11 - 2003", 2, "Programming"},
+{"Pemrograman C", "Misyael Yosevian Wiarda", "Dino Ariel", "10 - 11 - 2003", 3, "Programming"}};
 int N = 3;
 void printStruct(struct buku data_buku)
 {
   printf("\n###### Data Mahasiswa ######\n");
   printf("NRP : %s\n", data_buku.judul);
   printf("PENGARANG : %s\n", data_buku.pengarang);
+  printf("PENERBIT : %s\n", data_buku.penerbit);
   printf("TAHUN TERBIT : %s\n", data_buku.tahun_terbit);
-  printf("PENERBIT : %s\n", data_buku.data_penerbit.name);
-  printf("ALAMAT PENERBIT : %s\n", data_buku.data_penerbit.name);
+  printf("CATEGORY : %s\n", data_buku.categories.name);
 }
 
 struct buku input()
@@ -36,13 +36,12 @@ struct buku input()
   fgets(&data_buku.judul, 15, stdin);
   printf("Masukkan Pengarang: ");
   fgets(&data_buku.pengarang, 30, stdin);
+  printf("Masukkan penerbit: ");
+  fgets(&data_buku.penerbit, 30, stdin);
   printf("Masukkan tahun terbit: ");
   fgets(&data_buku.tahun_terbit, 30, stdin);
-  printf("Masukkan Penerbit: ");
-  fgets(&data_buku.data_penerbit.name, 30, stdin);
-  return data_buku;
-  printf("Masukkan Alamat Penerbit: ");
-  fgets(&data_buku.data_penerbit.alamat, 30, stdin);
+  printf("Masukkan category: ");
+  fgets(&data_buku.categories.name, 30, stdin);
   return data_buku;
 }
 void addData()
@@ -105,11 +104,11 @@ int main()
     {
       addData();
     }
-    // else if (pilih == 3)
-    // {
-    //   struct mahasiswa hasil = searchingNRP("3124500024");
-    //   printStruct(hasil);
-    // }
+      // else if (pilih == 3)
+      // {
+      //   struct mahasiswa hasil = searchingNRP("3124500024");
+      //   printStruct(hasil);
+      // }
     fflush(stdin);
     printf("\nMau memasukkan data lagi [Y/T] ? ");
     lagiMenu = getchar();
