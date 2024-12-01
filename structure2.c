@@ -16,53 +16,59 @@ struct buku
 };
 
 struct buku data_buku[10] = {
-    {"Code Complete: A Practical Handbook of Software Construction", "Steve McConnell", "2004", "Microsoft Press", "Redmond, Washington, USA"},
-    {"Refactoring: Improving the Design of Existing Code", "Martin Fowler", "1999", "Addison-Wesley", "Boston, Massachusetts, USA"},
-    {"Software Engineering: A Practitioner's Approach", "Roger S. Pressman", "2014", "McGraw-Hill Education", "New York, USA"},
-    {"The Mythical Man-Month: Essays on Software Engineering", "Frederick P. Brooks Jr.", "1975", "Addison-Wesley", "Boston, Massachusetts, USA"},
-    {"Patterns of Enterprise Application Architecture", "Martin Fowler", "2002", "Addison-Wesley", "Boston, Massachusetts, USA"},
-    {"Agile Estimating and Planning", "Mike Cohn", "2005", "Prentice Hall", "Upper Saddle River, New Jersey, USA"},
-};
+    {"Code Complete: A Practical Handbook of Software Construction", "Steve McConnell", "2004", {"Microsoft Press", "Redmond, Washington, USA"}},
+    {"Refactoring: Improving the Design of Existing Code", "Martin Fowler", "1999", {"Addison-Wesley", "Boston, Massachusetts, USA"}},
+    {"Software Engineering: A Practitioner's Approach", "Roger S. Pressman", "2014", {"McGraw-Hill Education", "New York, USA"}},
+    {"The Mythical Man-Month: Essays on Software Engineering", "Frederick P. Brooks Jr.", "1975", {"Addison-Wesley", "Boston, Massachusetts, USA"}},
+    {"Patterns of Enterprise Application Architecture", "Martin Fowler", "2002", {"Addison-Wesley", "Boston, Massachusetts, USA"}},
+    {"Agile Estimating and Planning", "Mike Cohn", "2005", {"Prentice Hall", "Upper Saddle River, New Jersey, USA"}}};
 
-int N = 3;
+int N = 6;
+
 void printStruct(struct buku data_buku)
 {
-  printf("JUDUL : %s\n", data_buku.judul);
-  printf("PENGARANG : %s\n", data_buku.pengarang);
-  printf("TAHUN TERBIT : %s\n", data_buku.tahun_terbit);
-  printf("PENERBIT : %s\n", data_buku.data_penerbit.name);
-  printf("ALAMAT PENERBIT : %s\n", data_buku.data_penerbit.alamat);
+  printf("TITLE: %s\n", data_buku.judul);
+  printf("AUTHOR: %s\n", data_buku.pengarang);
+  printf("PUBLICATION YEARS: %s\n", data_buku.tahun_terbit);
+  printf("PUBLISHER NAME: %s\n", data_buku.data_penerbit.name);
+  printf("PUBLISHER ADDRESS: %s\n", data_buku.data_penerbit.alamat);
 }
 
 struct buku input()
 {
   struct buku data_buku;
-  printf("Masukkan Judul: ");
-  fgets(&data_buku.judul, 15, stdin);
-  printf("Masukkan Pengarang: ");
-  fgets(&data_buku.pengarang, 30, stdin);
-  printf("Masukkan tahun terbit: ");
-  fgets(&data_buku.tahun_terbit, 30, stdin);
-  printf("Masukkan Penerbit: ");
-  fgets(&data_buku.data_penerbit.name, 30, stdin);
-  printf("Masukkan Alamat Penerbit: ");
-  fgets(&data_buku.data_penerbit.alamat, 30, stdin);
+  printf("Insert Book Title: ");
+  fgets(data_buku.judul, sizeof(data_buku.judul), stdin);
+  data_buku.judul[strcspn(data_buku.judul, "\n")] = '\0';
+  printf("Insert Book Author: ");
+  fgets(data_buku.pengarang, sizeof(data_buku.pengarang), stdin);
+  data_buku.pengarang[strcspn(data_buku.pengarang, "\n")] = '\0';
+  printf("Insert Book Year of Publication: ");
+  fgets(data_buku.tahun_terbit, sizeof(data_buku.tahun_terbit), stdin);
+  data_buku.tahun_terbit[strcspn(data_buku.tahun_terbit, "\n")] = '\0';
+  printf("Insert Publisher Name: ");
+  fgets(data_buku.data_penerbit.name, sizeof(data_buku.data_penerbit.name), stdin);
+  data_buku.data_penerbit.name[strcspn(data_buku.data_penerbit.name, "\n")] = '\0';
+  printf("Insert Publisher Address: ");
+  fgets(data_buku.data_penerbit.alamat, sizeof(data_buku.data_penerbit.alamat), stdin);
+  data_buku.data_penerbit.alamat[strcspn(data_buku.data_penerbit.alamat, "\n")] = '\0';
   return data_buku;
 }
+
 void addData()
 {
   char lagi;
   do
   {
     data_buku[N] = input();
-    fflush(stdin);
-    printf("\nMau memasukkan data lagi [Y/T] ? ");
-    lagi = getchar();
-    fflush(stdin);
     N++;
+    printf("\nWant to enter data again [Y/T] ? ");
+    lagi = getchar();
+    getchar();
   } while (lagi == 'Y' || lagi == 'y');
   printStructAll(N);
 }
+
 void printStructAll(int n)
 {
   for (int i = 0; i < n; i++)
@@ -72,38 +78,90 @@ void printStructAll(int n)
     printf("_______________________________________________\n");
   }
 }
+
 int menu()
 {
   int pilihan;
-  printf("Pilihan menu\n");
-  printf("1: Show Buku\n");
-  printf("2: Add Buku\n");
-  printf("3: Searching\n");
+  printf("Select Menu\n");
+  printf("1: Show All Books\n");
+  printf("2: Add Book\n");
+  printf("3: Search Books\n");
 
-  printf("Pilih: ");
+  printf("Choose: ");
   scanf("%d", &pilihan);
-
+  getchar();
   return pilihan;
 }
 
-struct buku searchingJudul(char judul[])
+void searching(char data[], int pil)
 {
   int found = 0;
+  if (pil == 1)
+  {
+    printf("\nBook with title \"%s\" found:\n", data);
+  }
+  else if (pil == 2)
+  {
+    printf("\nBook with publisher \"%s\" found:\n", data);
+  }
+  else
+  {
+    printf("\nBook with publication year \"%s\" found:\n", data);
+  }
   for (int i = 0; i < N; i++)
   {
-    if (strstr(data_buku[i].judul, judul))
+    if (pil == 1)
     {
-      // Jika ditemukan, tampilkan data buku
-      printf("\nBuku ditemukan:\n");
-      printStruct(data_buku[i]);
-      found = 1;
+      if (strstr(data_buku[i].judul, data))
+      {
+        printf("\n");
+        printStruct(data_buku[i]);
+        printf("_______________________________________________\n");
+        found = 1;
+      }
+    }
+    else if (pil == 2)
+    {
+      if (strstr(data_buku[i].data_penerbit.name, data))
+      {
+        printf("\n");
+        printStruct(data_buku[i]);
+        printf("_______________________________________________\n");
+        found = 1;
+      }
+    }
+    else if (pil == 3)
+    {
+      if (strstr(data_buku[i].tahun_terbit, data))
+      {
+        printf("\n");
+        printStruct(data_buku[i]);
+        printf("_______________________________________________\n");
+        found = 1;
+      }
+    }
+    else
+    {
+      printf("\nInvalid input.\n");
     }
   }
   if (!found)
   {
-    printf("Buku dengan judul \"%s\" tidak ditemukan.\n", judul);
+    if (pil == 1)
+    {
+      printf("\nNo books found with Title\"%s\".\n", data);
+    }
+    else if (pil == 2)
+    {
+      printf("\nNo books found with Publisher\"%s\".\n", data);
+    }
+    else
+    {
+      printf("\nNo books found with Publication Year\"%s\".\n", data);
+    }
   }
 }
+
 int main()
 {
   char search[200];
@@ -111,11 +169,10 @@ int main()
   do
   {
     int pilih = menu();
-    fflush(stdin);
 
     if (pilih == 1)
     {
-      printf("\n==================== Data Buku ====================\n");
+      printf("\n==================== BOOKS DATA ====================\n");
       printStructAll(N);
     }
     else if (pilih == 2)
@@ -124,21 +181,28 @@ int main()
     }
     else if (pilih == 3)
     {
-      printf("Cari berdasarkan ?");
-      printf("1.Judul");
-      printf("2.Penerbit");
-      printf("2.Penerbit");
+      int pilihan;
+      printf("Search By ?\n");
+      printf("1. Title\n");
+      printf("2. Publisher\n");
+      printf("3. Publication Year\n");
+      printf("Choose: ");
+      scanf("%d", &pilihan);
+      getchar();
 
-      printf("Masukkan kata kunci: ");
-      fgets(search, 30, stdin);
+      printf("Input Keywords: ");
+      fgets(search, sizeof(search), stdin);
       search[strcspn(search, "\n")] = '\0';
-      searchingJudul(search);
-      printf(search);
+      searching(search, pilihan);
     }
-    fflush(stdin);
-    printf("\nMau memasukkan data lagi [Y/T] ? ");
+    else
+    {
+      printf("\nInvalid Input\n");
+    }
+
+    printf("\nBack to Main Menu? [Y/T] ");
     lagiMenu = getchar();
-    fflush(stdin);
+    getchar();
   } while (lagiMenu == 'Y' || lagiMenu == 'y');
 
   return 0;
