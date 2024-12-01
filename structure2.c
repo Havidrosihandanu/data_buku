@@ -16,17 +16,19 @@ struct buku
 
 struct buku data_buku[10] = {
     {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"}};
+    {"Web Desain", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
+    {"Fisika", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
+    {"Matematika C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"}};
+
 int N = 3;
 void printStruct(struct buku data_buku)
 {
-  printf("\n###### Data Mahasiswa ######\n");
-  printf("NRP : %s\n", data_buku.judul);
+  printf("\n========== Data Buku ==========\n");
+  printf("JUDUL : %s\n", data_buku.judul);
   printf("PENGARANG : %s\n", data_buku.pengarang);
   printf("TAHUN TERBIT : %s\n", data_buku.tahun_terbit);
   printf("PENERBIT : %s\n", data_buku.data_penerbit.name);
-  printf("ALAMAT PENERBIT : %s\n", data_buku.data_penerbit.name);
+  printf("ALAMAT PENERBIT : %s\n", data_buku.data_penerbit.alamat);
 }
 
 struct buku input()
@@ -40,7 +42,6 @@ struct buku input()
   fgets(&data_buku.tahun_terbit, 30, stdin);
   printf("Masukkan Penerbit: ");
   fgets(&data_buku.data_penerbit.name, 30, stdin);
-  return data_buku;
   printf("Masukkan Alamat Penerbit: ");
   fgets(&data_buku.data_penerbit.alamat, 30, stdin);
   return data_buku;
@@ -68,29 +69,39 @@ void printStructAll(int n)
 }
 int menu()
 {
-  int pilih;
+  int pilihan;
   printf("Pilihan menu\n");
-  printf("1: View\n");
-  printf("2: Add data\n");
-  printf("3: Searching NRP\n");
+  printf("1: Show Buku\n");
+  printf("2: Add Buku\n");
+  printf("3: Searching By Judul\n");
 
   printf("Pilih: ");
-  scanf("%d", &pilih);
+  scanf("%d", &pilihan);
 
-  return pilih;
+  return pilihan;
 }
+
 struct buku searchingJudul(char judul[])
 {
+  int found = 0;
   for (int i = 0; i < N; i++)
   {
-    if (strcmp(data_buku[i].judul, judul) == 0)
+    if (strstr(data_buku[i].judul, judul))
     {
-      return data_buku[i];
+      // Jika ditemukan, tampilkan data buku
+      printf("\nBuku ditemukan:\n");
+      printStruct(data_buku[i]);
+      found = 1;
     }
+  }
+  if (!found)
+  {
+    printf("Buku dengan judul \"%s\" tidak ditemukan.\n", judul);
   }
 }
 int main()
 {
+  char search[200];
   char lagiMenu;
   do
   {
@@ -105,11 +116,14 @@ int main()
     {
       addData();
     }
-    // else if (pilih == 3)
-    // {
-    //   struct mahasiswa hasil = searchingNRP("3124500024");
-    //   printStruct(hasil);
-    // }
+    else if (pilih == 3)
+    {
+      printf("Masukkan kata kunci: ");
+      fgets(search, 30, stdin);
+      search[strcspn(search, "\n")] = '\0';
+      searchingJudul(search);
+      printf(search);
+    }
     fflush(stdin);
     printf("\nMau memasukkan data lagi [Y/T] ? ");
     lagiMenu = getchar();
