@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+
 struct penerbit
 {
   char name[30];
@@ -15,15 +16,17 @@ struct buku
 };
 
 struct buku data_buku[10] = {
-    {"Pemrograman C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Web Desain", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Fisika", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"},
-    {"Matematika C", "Dino Ariel", "10 - 11 - 2003", "Havid", "Ponorogo"}};
+    {"Code Complete: A Practical Handbook of Software Construction", "Steve McConnell", "2004", "Microsoft Press", "Redmond, Washington, USA"},
+    {"Refactoring: Improving the Design of Existing Code", "Martin Fowler", "1999", "Addison-Wesley", "Boston, Massachusetts, USA"},
+    {"Software Engineering: A Practitioner's Approach", "Roger S. Pressman", "2014", "McGraw-Hill Education", "New York, USA"},
+    {"The Mythical Man-Month: Essays on Software Engineering", "Frederick P. Brooks Jr.", "1975", "Addison-Wesley", "Boston, Massachusetts, USA"},
+    {"Patterns of Enterprise Application Architecture", "Martin Fowler", "2002", "Addison-Wesley", "Boston, Massachusetts, USA"},
+    {"Agile Estimating and Planning", "Mike Cohn", "2005", "Prentice Hall", "Upper Saddle River, New Jersey, USA"},
+};
 
 int N = 3;
 void printStruct(struct buku data_buku)
 {
-  printf("\n========== Data Buku ==========\n");
   printf("JUDUL : %s\n", data_buku.judul);
   printf("PENGARANG : %s\n", data_buku.pengarang);
   printf("TAHUN TERBIT : %s\n", data_buku.tahun_terbit);
@@ -64,7 +67,9 @@ void printStructAll(int n)
 {
   for (int i = 0; i < n; i++)
   {
+    printf("\n");
     printStruct(data_buku[i]);
+    printf("_______________________________________________\n");
   }
 }
 int menu()
@@ -73,7 +78,7 @@ int menu()
   printf("Pilihan menu\n");
   printf("1: Show Buku\n");
   printf("2: Add Buku\n");
-  printf("3: Searching By Judul\n");
+  printf("3: Searching\n");
 
   printf("Pilih: ");
   scanf("%d", &pilihan);
@@ -110,6 +115,7 @@ int main()
 
     if (pilih == 1)
     {
+      printf("\n==================== Data Buku ====================\n");
       printStructAll(N);
     }
     else if (pilih == 2)
@@ -118,6 +124,11 @@ int main()
     }
     else if (pilih == 3)
     {
+      printf("Cari berdasarkan ?");
+      printf("1.Judul");
+      printf("2.Penerbit");
+      printf("2.Penerbit");
+
       printf("Masukkan kata kunci: ");
       fgets(search, 30, stdin);
       search[strcspn(search, "\n")] = '\0';
