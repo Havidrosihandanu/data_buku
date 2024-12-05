@@ -1,21 +1,22 @@
 #include <stdio.h>
 #include <string.h>
+#define MAX_BOOKS 10
 
-struct penerbit
+struct Penerbit
 {
   char name[30];
   char alamat[50];
 };
 
-struct buku
+struct Buku
 {
   char judul[30];
   char pengarang[30];
   char tahun_terbit[30];
-  struct penerbit data_penerbit;
+  struct Penerbit data_penerbit;
 };
 
-struct buku data_buku[10] = {
+struct Buku data_buku[MAX_BOOKS] = {
     {"Code Complete: A Practical Handbook of Software Construction", "Steve McConnell", "2004", {"Microsoft Press", "Redmond, Washington, USA"}},
     {"Refactoring: Improving the Design of Existing Code", "Martin Fowler", "1999", {"Addison-Wesley", "Boston, Massachusetts, USA"}},
     {"Software Engineering: A Practitioner's Approach", "Roger S. Pressman", "2014", {"McGraw-Hill Education", "New York, USA"}},
@@ -23,9 +24,10 @@ struct buku data_buku[10] = {
     {"Patterns of Enterprise Application Architecture", "Martin Fowler", "2002", {"Addison-Wesley", "Boston, Massachusetts, USA"}},
     {"Agile Estimating and Planning", "Mike Cohn", "2005", {"Prentice Hall", "Upper Saddle River, New Jersey, USA"}}};
 
-int N = 6;
+int countBookData = 6;
 
-void printStruct(struct buku data_buku)
+
+void printStruct(struct Buku data_buku)
 {
   printf("TITLE: %s\n", data_buku.judul);
   printf("AUTHOR: %s\n", data_buku.pengarang);
@@ -34,24 +36,29 @@ void printStruct(struct buku data_buku)
   printf("PUBLISHER ADDRESS: %s\n", data_buku.data_penerbit.alamat);
 }
 
-struct buku input()
+struct Buku input()
 {
-  struct buku data_buku;
+  struct Buku data_buku;
   printf("Insert Book Title: ");
   fgets(data_buku.judul, sizeof(data_buku.judul), stdin);
   data_buku.judul[strcspn(data_buku.judul, "\n")] = '\0';
+
   printf("Insert Book Author: ");
   fgets(data_buku.pengarang, sizeof(data_buku.pengarang), stdin);
   data_buku.pengarang[strcspn(data_buku.pengarang, "\n")] = '\0';
+
   printf("Insert Book Year of Publication: ");
   fgets(data_buku.tahun_terbit, sizeof(data_buku.tahun_terbit), stdin);
   data_buku.tahun_terbit[strcspn(data_buku.tahun_terbit, "\n")] = '\0';
+
   printf("Insert Publisher Name: ");
   fgets(data_buku.data_penerbit.name, sizeof(data_buku.data_penerbit.name), stdin);
   data_buku.data_penerbit.name[strcspn(data_buku.data_penerbit.name, "\n")] = '\0';
+
   printf("Insert Publisher Address: ");
   fgets(data_buku.data_penerbit.alamat, sizeof(data_buku.data_penerbit.alamat), stdin);
   data_buku.data_penerbit.alamat[strcspn(data_buku.data_penerbit.alamat, "\n")] = '\0';
+
   return data_buku;
 }
 
@@ -60,13 +67,26 @@ void addData()
   char lagi;
   do
   {
-    data_buku[N] = input();
-    N++;
-    printf("\nWant to enter data again [Y/T] ? ");
-    lagi = getchar();
-    getchar();
-  } while (lagi == 'Y' || lagi == 'y');
-  printStructAll(N);
+    if (countBookData >= MAX_BOOKS)
+    {
+      printf("\nData storage is full. Cannot add more books.\n");
+      break;
+    }
+
+    data_buku[countBookData] = input();
+    countBookData++;
+
+    do
+    {
+      printf("\nWant to enter data again [Y/T]? ");
+      scanf(" %c", &lagi);
+      getchar();
+      lagi = toupper(lagi);
+    } while (lagi != 'Y' && lagi != 'T');
+
+  } while (lagi == 'Y');
+
+  printStructAll(countBookData);
 }
 
 void printStructAll(int n)
@@ -108,7 +128,7 @@ void searching(char data[], int pil)
   {
     printf("\nBook with publication year \"%s\" found:\n", data);
   }
-  for (int i = 0; i < N; i++)
+  for (int i = 0; i < countBookData; i++)
   {
     if (pil == 1)
     {
@@ -173,7 +193,7 @@ int main()
     if (pilih == 1)
     {
       printf("\n==================== BOOKS DATA ====================\n");
-      printStructAll(N);
+      printStructAll(countBookData);
     }
     else if (pilih == 2)
     {
